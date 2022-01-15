@@ -1,4 +1,3 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
@@ -21,35 +20,30 @@ const P = styled.p`
   font-size: 25px;
 `;
 
-class ContactsListItem extends Component {
-  static propTypes = {
-    contact: PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }).isRequired,
-    onClick: PropTypes.func.isRequired,
+function ContactsListItem({ onClick, contact: { name, number } }) {
+  const handleClick = () => {
+    onClick(number);
   };
 
-  handleClick = ({ currentTarget: { name } }) => {
-    this.props.onClick(name);
-  };
-
-  render() {
-    const {
-      contact: { name, number, id },
-    } = this.props;
-    return (
-      <>
-        <P>
-          {name}: {number}
-        </P>
-        <Button name={id} type="button" onClick={this.handleClick}>
-          delete
-        </Button>
-      </>
-    );
-  }
+  return (
+    <>
+      <P>
+        {name}: {number}
+      </P>
+      <Button type="button" onClick={handleClick}>
+        delete
+      </Button>
+    </>
+  );
 }
+
+ContactsListItem.propTypes = {
+  contact: PropTypes.shape({
+    id: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
+    number: PropTypes.string.isRequired,
+  }).isRequired,
+  onClick: PropTypes.func.isRequired,
+};
 
 export { ContactsListItem, Button };
